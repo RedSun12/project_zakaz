@@ -6,6 +6,7 @@ import SigninPage from './pages/SigninPage/SigninPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 import { useEffect, useState } from 'react';
 import axiosInstance, { setAccessToken } from './axiosInstance';
+import Favorities from './components/Favorities/Favorities';
 
 function App() {
   const [user, setUser] = useState();
@@ -33,6 +34,10 @@ function App() {
         {
           path: '/signup',
           element: <SignupPage setUser={setUser} />,
+        },
+        {
+          path: '/favorities',
+          element: <Favorities user={user} setUser={setUser} />,
         },
       ],
     },

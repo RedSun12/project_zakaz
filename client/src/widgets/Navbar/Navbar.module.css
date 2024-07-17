@@ -9,12 +9,12 @@
   justify-content: space-between;
   align-items: center;
 
-  padding: 0 20px;
+  padding:  20px;
 }
 
 .left, .right {
   width: 160px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
 }

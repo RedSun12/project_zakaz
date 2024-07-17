@@ -21,6 +21,7 @@ export default function Navbar({ user, setUser }) {
         {user?.username ? (
           <>
             <Link>{user.username}</Link>
+            <Link to='/favorities'>Избранное</Link>
             <Link onClick={logoutHandler}>Выйти</Link>
           </>
         ) : (

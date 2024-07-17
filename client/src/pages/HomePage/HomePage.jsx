@@ -12,7 +12,7 @@ export default function HomePage({ user }) {
 
   useEffect(() => {
     axiosInstance
-      .get(`${VITE_API}/whales`)
+      .get(`${VITE_API}/recepts`)
       .then((res) => {
         setEntries(res.data);
       })
