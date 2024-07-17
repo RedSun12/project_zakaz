@@ -1,0 +1,13 @@
+.wrapper {
+  margin-top: 30px;
+  width: 400px;
+}
+
+.container {
+  background-color: #313133;
+}
+
+.body {
+  display: flex;
+  justify-content: space-between;
+}
