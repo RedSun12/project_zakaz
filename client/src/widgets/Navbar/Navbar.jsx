@@ -1,6 +1,10 @@
+import { IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons'
 import axiosInstance, { setAccessToken } from '../../axiosInstance';
 import styles from './Navbar.module.css';
 import { Link } from 'react-router-dom';
+import { BiHomeSmile } from "react-icons/bi";
+import AuthForm from '../../components/AuthForm/AuthForm';
 
 export default function Navbar({ user, setUser }) {
   const logoutHandler = async () => {
@@ -14,9 +18,44 @@ export default function Navbar({ user, setUser }) {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.left}>
-        <Link to='/'>На главную</Link>
-      </div>
+      {user?.username ? (
+        <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    aria-label='Options'
+                    icon={<HamburgerIcon />}
+                    variant='outline'
+                    backgroundColor={'white'}
+                  />
+                  <MenuList>
+                    {/* <MenuItem color={'black'} icon={<BiHomeSmile />} command='⌘T'> */}
+                    <Link to='/'>Войти</Link>
+                      {/* Главная
+                    </MenuItem> */}
+                  </MenuList>
+        </Menu>
+      ) : (
+                  <Menu>
+                  <MenuButton
+                    as={IconButton}
+                    aria-label='Options'
+                    icon={<HamburgerIcon />}
+                    variant='outline'
+                    backgroundColor={'white'}
+                  />
+                  <MenuList>
+                    {/* <MenuItem color={'black'} icon={<BiHomeSmile />} command='⌘T'> */}
+                      <Link to='/signin'>Войти</Link>
+                    {/* </MenuItem> */}
+                    {/* <MenuItem color={'black'} icon={<ExternalLinkIcon />} command='⌘N'> */}
+                      <AuthForm title='Войти' type='signin' setUser={setUser} />
+                    {/* </MenuItem> */}
+                    {/* <MenuItem color={'black'} icon={<EditIcon />} command='⌘⇧N'> */}
+                      <AuthForm title='Зарегистрироваться' type='signup' setUser={setUser} />
+                    {/* </MenuItem> */}
+                  </MenuList>
+                </Menu>
+      )}
       <div className={styles.right}>
         {user?.username ? (
           <>
