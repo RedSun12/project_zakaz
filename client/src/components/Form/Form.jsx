@@ -3,6 +3,7 @@ import styles from './Form.module.css';
 import { Input, Button } from '@chakra-ui/react';
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
+// import {EOL} from 'os';
 import { BiSolidCommentError } from 'react-icons/bi';
 import {
   Card,
@@ -13,6 +14,9 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
+
+
+const { VITE_API } = import.meta.env;
 
 
 
@@ -47,7 +51,7 @@ export default function Form({ user, cook, setCook }) {
           `https://www.themealdb.com/api/json/v1/1/search.php?s=a`
         );
         setCook(response.data.meals);
-        console.log(cook)
+        console.log(cook);
         console.log(countIngridient(cook[0]), '****/////');
       } catch (err) {
         console.log(err);
@@ -59,9 +63,16 @@ export default function Form({ user, cook, setCook }) {
   function countIngridient(data) {
     let result = [];
     for (let i = 1; i <= 20; i++) {
-      result.push(data[`strIngredient${i}`]);
+
+      if (
+        data[`strIngredient${i}`] !== '' &&
+        data[`strIngredient${i}`] !== null
+      ) {
+        result.push(data[`strIngredient${i}`] + ' - ' + data[`strMeasure${i}`]);
+      }
     }
-    return result.filter((el) => el !== '' && el !== null).length;
+   
+    return result;
   }
 
   // количество времени
@@ -76,6 +87,27 @@ export default function Form({ user, cook, setCook }) {
       totalSeconds += value * timeUnits[unit];
     }
     return totalSeconds < 300 ? 32 : Math.round(totalSeconds / 60);
+  }
+
+  // const [recept, setRecept] = useState({
+
+  async function addRecept(el) {
+    console.log('addRecept  el:', el);
+    const recept = {
+      title: el.strMeal,
+      ingredients: countIngridient(el).join('\n\r'),
+      description: el.strInstructions,
+      image: el.strMealThumb,
+      quantityOfIngredients: countIngridient(el).length,
+      time: timeCook(el.strInstructions),
+      
+    };
+
+    try {
+      const res = await axiosInstance.post(`${VITE_API}/recepts`, recept);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -120,7 +152,7 @@ export default function Form({ user, cook, setCook }) {
                       Время приготовления: {timeCook(el.strInstructions)}мин.
                     </Text>
                     <Text color="black" py="2">
-                      Количество ингредиентов: {countIngridient(el)}
+                      Количество ингредиентов: {countIngridient(el).length}
                     </Text>
                   </CardBody>
 
@@ -135,7 +167,7 @@ export default function Form({ user, cook, setCook }) {
                     <Button
                       variant="solid"
                       colorScheme="black"
-                      // onClick={() => deleteHandler(el.id)}
+                      onClick={() => addRecept(el)}
                     >
                       ❤️
                     </Button>
