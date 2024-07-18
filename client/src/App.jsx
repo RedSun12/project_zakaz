@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage/SignupPage';
 import { useEffect, useState } from 'react';
 import axiosInstance, { setAccessToken } from './axiosInstance';
 import Favorities from './components/Favorities/Favorities';
+import MorePage from './pages/MorePage/MorePage';
 
 function App() {
   const [user, setUser] = useState();
@@ -44,6 +45,10 @@ function App() {
         {
           path: '/favorities',
           element: <Favorities user={user} setUser={setUser} />,
+        },
+        {
+          path: '/more/:idMeal',
+          element: <MorePage user={user} cook={cook} setCook={setCook}/>,
         },
       ],
     },

@@ -14,6 +14,7 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 
 const { VITE_API } = import.meta.env;
@@ -22,6 +23,7 @@ const { VITE_API } = import.meta.env;
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
+  const navigate = useNavigate();
 
   // console.log(cook);
   const onSubmitHandlet = async (e) => {
@@ -160,6 +162,7 @@ export default function Form({ user, cook, setCook }) {
                     <Button
                       variant="solid"
                       colorScheme="red"
+                      onClick={() => navigate(`/more/${el.idMeal}`)}
                       // onClick={() => deleteHandler(el.id)}
                     >
                       Подробнее
