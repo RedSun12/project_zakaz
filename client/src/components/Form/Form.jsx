@@ -220,7 +220,7 @@ export default function Form({ user, cook, setCook }) {
                 <Button
                   variant="solid"
                   colorScheme="red"
-                  // onClick={() => deleteHandler(el.id)}
+                  onClick={() => navigate(`/more/${el.idMeal}`)}
                 >
                   Подробнее
                 </Button>

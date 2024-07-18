@@ -14,17 +14,12 @@ function App() {
   const [user, setUser] = useState();
   const [cook, setCook] = useState({});
 
-
-
   useEffect(() => {
     axiosInstance(`${import.meta.env.VITE_API}/tokens/refresh`).then((res) => {
       setUser(res.data.user);
       setAccessToken(res.data.accessToken);
     });
   }, []);
-
-
-
 
   const router = createBrowserRouter([
     {
@@ -33,7 +28,7 @@ function App() {
       children: [
         {
           path: '/',
-          element: <HomePage user={user} cook={cook} setCook={setCook}/>,
+          element: <HomePage user={user} cook={cook} setCook={setCook} />,
         },
         {
           path: '/signin',
@@ -49,9 +44,18 @@ function App() {
         },
         {
           path: '/recepts/:id',
-          element: <InfoCard user={user} setUser={setUser} cook={cook} setCook={setCook}/>,
+          element: (
+            <InfoCard
+              user={user}
+              setUser={setUser}
+              cook={cook}
+              setCook={setCook}
+            />
+          ),
+        },
+        {
           path: '/more/:idMeal',
-          element: <MorePage user={user} cook={cook} setCook={setCook}/>,
+          element: <MorePage user={user} cook={cook} setCook={setCook} />,
         },
       ],
     },
