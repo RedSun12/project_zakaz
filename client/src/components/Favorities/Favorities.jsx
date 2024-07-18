@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axiosInstance';
 import styles from './Favorities.module.css';
+import { Link } from 'react-router-dom';
 import {
   Card,
   CardBody,
@@ -40,7 +41,7 @@ export default function Favorities({ user }) {
       {orders?.length ? (
         orders.map((el) => (
           <>
-            <Card 
+            <Card
               direction={{ base: 'column', sm: 'row' }}
               overflow="hidden"
               variant="outline"
@@ -48,7 +49,7 @@ export default function Favorities({ user }) {
               <Image
                 objectFit="cover"
                 maxW={{ base: '100%', sm: '200px' }}
-                src="/eda.jpg"
+                src={el.image}
                 alt="Your photo"
               />
 
@@ -59,7 +60,7 @@ export default function Favorities({ user }) {
                   </Heading>
 
                   <Text color="black" py="2">
-                    Время приготовления: {el.time}
+                    Время приготовления: {el.time} мин.
                   </Text>
                   <Text color="black" py="2">
                     Количество ингредиентов: {el.quantityOfIngredients}
@@ -67,6 +68,11 @@ export default function Favorities({ user }) {
                 </CardBody>
 
                 <CardFooter>
+                  <Link to={`/recepts/${el.id}`}>
+                    <Button variant="solid" colorScheme="green">
+                      Подробнее
+                    </Button>
+                  </Link>
                   <Button
                     variant="solid"
                     colorScheme="red"

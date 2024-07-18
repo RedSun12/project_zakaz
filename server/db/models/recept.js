@@ -12,9 +12,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Recept.init(
     {
+      idAPI: DataTypes.INTEGER,
       image: DataTypes.STRING,
       title: DataTypes.STRING,
-      ingredients: DataTypes.STRING,
+      ingredients: DataTypes.TEXT,
       quantityOfIngredients: DataTypes.INTEGER,
       time: DataTypes.INTEGER,
       description: DataTypes.TEXT,

@@ -9,6 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      idAPI: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       image: {
         type: Sequelize.STRING,
       },
@@ -18,7 +22,7 @@ module.exports = {
       },
       ingredients: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       quantityOfIngredients: {
         allowNull: false,
@@ -26,7 +30,7 @@ module.exports = {
       },
       time: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
       },
       description: {
         allowNull: false,

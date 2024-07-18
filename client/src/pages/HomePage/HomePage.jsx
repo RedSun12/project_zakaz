@@ -8,25 +8,25 @@ import { Spinner } from '@chakra-ui/react';
 const { VITE_API } = import.meta.env;
 
 export default function HomePage({ user, setCook, cook }) {
-  const [entries, setEntries] = useState([]);
+  // const [entries, setEntries] = useState([]);
 
-  useEffect(() => {
-    axiosInstance
-      .get(`${VITE_API}/recepts`)
-      .then((res) => {
-        setEntries(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   axiosInstance
+  //     .get(`${VITE_API}/recepts`)
+  //     .then((res) => {
+  //       setEntries(res.data);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   return (
     <div className={styles.wrapper}>
-      {entries?.length ? (
+     
         <>
-          <Form cook={cook} setCook={setCook} setEntries={setEntries} user={user} />
-          <List data={entries} setEntries={setEntries} user={user} />
+          <Form cook={cook} setCook={setCook} user={user} />
+          {/* <List data={entries} setEntries={setEntries} user={user} /> */}
         </>
-      ) : (
+      {/* ) : (
         <Spinner
           style={{
             position: 'absolute',
@@ -39,8 +39,8 @@ export default function HomePage({ user, setCook, cook }) {
           emptyColor='gray.200'
           color='blue.500'
           size='xl'
-        />
-      )}
+        /> */}
+      
     </div>
   );
 }

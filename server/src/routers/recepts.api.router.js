@@ -24,6 +24,7 @@ router
   })
   .post('/', verifyAccessToken, async (req, res) => {
     const {
+      idAPI,
       title,
       ingredients,
       description,
@@ -34,6 +35,7 @@ router
     console.log(req.body);
     try {
       const recept = await Recept.create({
+        idAPI,
         title,
         ingredients,
         description,

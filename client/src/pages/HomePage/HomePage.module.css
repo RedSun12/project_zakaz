@@ -1,8 +1,8 @@
 .wrapper {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* flex-direction: column; */
+   justify-content: center; 
+  /* align-items: center; */
   animation: color 9s infinite linear;
   /* background-color: blanchedalmond; */
 

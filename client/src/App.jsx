@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage/SignupPage';
 import { useEffect, useState } from 'react';
 import axiosInstance, { setAccessToken } from './axiosInstance';
 import Favorities from './components/Favorities/Favorities';
+import InfoCard from './components/InfoCard/InfoCard';
 
 function App() {
   const [user, setUser] = useState();
@@ -44,6 +45,10 @@ function App() {
         {
           path: '/favorities',
           element: <Favorities user={user} setUser={setUser} />,
+        },
+        {
+          path: '/recepts/:id',
+          element: <InfoCard user={user} setUser={setUser} cook={cook} setCook={setCook}/>,
         },
       ],
     },
