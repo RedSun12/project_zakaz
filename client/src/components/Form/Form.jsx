@@ -1,53 +1,128 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Form.module.css';
 import { Input, Button } from '@chakra-ui/react';
+import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
+import { BiSolidCommentError } from 'react-icons/bi';
+import {
+  Card,
+  CardBody,
+  Heading,
+  Stack,
+  CardFooter,
+  Text,
+  Image,
+} from '@chakra-ui/react';
 
-const { VITE_API } = import.meta.env;
+// const { VITE_API } = import.meta.env;
 
-export default function Form({ user, setEntries }) {
+export default function Form({ user, cook, setCook }) {
   const [inputs, setInputs] = useState({ name: '', description: '' });
 
-  const changeHandler = (e) => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  // const changeHandler = (e) => {
+  //   setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  // };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const res = await axiosInstance.post(`${VITE_API}/whales`, {
-      ...inputs,
-      user: user.id,
-    });
-    if (res.status === 200) {
-      setEntries((prev) => [...prev, res.data]);
-      setInputs({ name: '', description: '' });
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+  // };
+
+  useEffect(() => {
+    const fetchApod = async () => {
+      try {
+        const response = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/search.php?f=b`
+        );
+        setCook(response.data.meals);
+        console.log(cook)
+        console.log(countIngridient(cook[0]), '****/////');
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchApod();
+  }, [user]);
+
+  function countIngridient(data) {
+    let result = [];
+    for (let i = 1; i <= 20; i++) {
+      result.push(data[`strIngredient${i}`]);
+      // console.log(result, 'result')
     }
-  };
+    return result.filter((el) => el !== '' && el !== null).length;
+  }
+
+  // количество времени
+  function timeCook(text) {
+    const regex = /\b(\d+).(hou|min|sec)/g;
+    const timeUnits = { 'hou': 3600, 'min': 60, 'sec': 1 };
+    let totalSeconds = 0;
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const value = parseInt(match[1], 10);
+      const unit = match[2];
+      totalSeconds += (value * timeUnits[unit]);
+    }
+    return totalSeconds < 300 ? 32 : Math.round(totalSeconds / 60);
+  }
 
   return (
-    <form onSubmit={submitHandler} className={styles.wrapper}>
-      <h3 className={styles.head}>Добавь своего кита:</h3>
-      <div className={styles.inputs}>
-        <Input
-          onChange={changeHandler}
-          borderColor='#3f3e3e'
-          name='name'
-          value={inputs.name}
-          placeholder='Имя'
-        />
-        <Input
-          onChange={changeHandler}
-          borderColor='#3f3e3e'
-          name='description'
-          value={inputs.description}
-          placeholder='Описание'
-        />
+    <>
+      <div className={styles.wrapper} key={cook?.id}>
+        <h1>Избранное</h1>
+        {cook?.length ? (
+          cook.map((el) => (
+            <>
+              <Card
+                direction={{ base: 'column', sm: 'row' }}
+                overflow="hidden"
+                variant="outline"
+              >
+                <Image
+                  objectFit="cover"
+                  maxW={{ base: '100%', sm: '200px' }}
+                  src={el.strMealThumb}
+                  alt="Your photo"
+                />
+
+                <Stack>
+                  <CardBody>
+                    <Heading color="blue.600" size="md">
+                      {el.strMeal}
+                    </Heading>
+
+                    <Text color="black" py="2">
+                      Время приготовления: {timeCook(el.strInstructions)}мин.
+                    </Text>
+                    <Text color="black" py="2">
+                      Количество ингредиентов: {countIngridient(el)}
+                    </Text>
+                  </CardBody>
+
+                  <CardFooter>
+                    <Button
+                      variant="solid"
+                      colorScheme="red"
+                      // onClick={() => deleteHandler(el.id)}
+                    >
+                      Подробнее
+                    </Button>
+                    <Button
+                      variant="solid"
+                      colorScheme="black"
+                      // onClick={() => deleteHandler(el.id)}
+                    >
+                      ❤️
+                    </Button>
+                  </CardFooter>
+                </Stack>
+              </Card>
+            </>
+          ))
+        ) : (
+          <h3>Список избранного пуст</h3>
+        )}
       </div>
-      <div className={styles.btns}>
-        <Button type='submit' colorScheme='blue'>
-          Создать
-        </Button>
-      </div>
-    </form>
+    </>
   );
 }
