@@ -14,10 +14,12 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 const { VITE_API } = import.meta.env;
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
+  const navigate = useNavigate();
 
   const onSubmitHandlet = async (e) => {
     e.preventDefault();
@@ -182,7 +184,6 @@ export default function Form({ user, cook, setCook }) {
           создать
         </button>
       </form>
-
       <h1>Избранное</h1>
       {cook?.length ? (
         cook.map((el, i) => (
