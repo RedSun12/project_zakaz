@@ -29,7 +29,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
   return (
     <>
     {type === 'signin' && (
-      <><Button onClick={onOpen}>Вход</Button>
+      <><Button className={styles.btnSing} width={'100%'} onClick={onOpen}>Вход</Button>
       <Modal
           className={styles.wrapper}
           initialFocusRef={initialRef}
@@ -42,6 +42,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               <FormControl>
                 <FormLabel>Email:</FormLabel>
                 <Input
+                  color={'black'}
                   ref={initialRef}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
@@ -54,6 +55,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               <FormControl mt={4}>
                 <FormLabel>Пароль:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='password'
@@ -73,7 +75,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
         <br /></>
           )}
           {type === 'signup' && (
-                  <><Button onClick={onOpen}>Регистрация</Button>
+                  <><Button width={'100%'} onClick={onOpen}>Регистрация</Button>
                   <Modal
           className={styles.wrapper}
           initialFocusRef={initialRef}
@@ -87,6 +89,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               <FormControl>
                 <FormLabel>Имя пользователя:</FormLabel>
                 <Input
+                  color={'black'}
                   ref={initialRef}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
@@ -98,6 +101,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               <FormControl mt={4}>
                 <FormLabel>Email:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='email'
@@ -108,6 +112,7 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               <FormControl mt={4}>
                 <FormLabel>Пароль:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='password'
