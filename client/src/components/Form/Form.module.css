@@ -28,3 +28,11 @@
 .btns {
   margin-top: 20px;
 }
+
+.todoContainer {
+  color: black;
+}
+
+.submitButton {
+  background-color: aquamarine;
+}
