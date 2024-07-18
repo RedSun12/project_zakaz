@@ -46,7 +46,7 @@ export default function Navbar({ user, setUser }) {
                     {/* <Link color='black' to='/'>Главная</Link> */}
                       {/* Главная
                     </MenuItem> */}
-                  </MenuList>
+          </MenuList>
         </Menu>
         <Avatar className={styles.ava} width={'60px'} height={'60px'} backgroundColor={'gray'} src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user.username}`} alt="avatar" />
         <div className={styles.nickName}>{user.username}</div>
@@ -63,31 +63,18 @@ export default function Navbar({ user, setUser }) {
                     backgroundColor={'white'}
                   />
                   <MenuList padding={'0px'}>
-                    {/* <MenuItem color={'black'} icon={<BiHomeSmile />} command='⌘T'> */}
-                      {/* <Button onClick={clickNavigate} color={'black'}>Главная</Button> */}
-                    {/* </MenuItem> */}
-                    {/* <MenuItem color={'black'} icon={<ExternalLinkIcon />} command='⌘N'> */}
                       <AuthForm width={'100%'} title='Войти' type='signin' setUser={setUser} />
-                      {/* <br /> */}
-                    {/* </MenuItem> */}
-                    {/* <MenuItem color={'black'} icon={<EditIcon />} command='⌘⇧N'> */}
                       <AuthForm width={'100%'} title='Зарегистрироваться' type='signup' setUser={setUser} />
-                    {/* </MenuItem> */}
                   </MenuList>
                 </Menu>
       )}
       <div className={styles.right}>
         {user?.username ? (
           <>
-            {/* <Link to='/favorities'>Избранное</Link> */}
             <Button className={styles.exit} marginRight={'10px'} onClick={logoutHandler}>Выйти</Button>
-            {/* <Link onClick={logoutHandler}>Выйти</Link> */}
           </>
         ) : (
-          <>
-            {/* <Link to='/signin'>Войти</Link>
-            <Link to='/signup'>Регистрация</Link> */}
-          </>
+          <></>
         )}
       </div>
     </div>

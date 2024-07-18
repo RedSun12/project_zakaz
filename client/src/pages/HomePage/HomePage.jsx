@@ -7,7 +7,7 @@ import { Spinner } from '@chakra-ui/react';
 
 const { VITE_API } = import.meta.env;
 
-export default function HomePage({ user }) {
+export default function HomePage({ user, setCook, cook }) {
   const [entries, setEntries] = useState([]);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function HomePage({ user }) {
     <div className={styles.wrapper}>
       {entries?.length ? (
         <>
-          <Form setEntries={setEntries} user={user} />
+          <Form cook={cook} setCook={setCook} setEntries={setEntries} user={user} />
           <List data={entries} setEntries={setEntries} user={user} />
         </>
       ) : (

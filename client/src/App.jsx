@@ -10,6 +10,9 @@ import Favorities from './components/Favorities/Favorities';
 
 function App() {
   const [user, setUser] = useState();
+  const [cook, setCook] = useState({});
+
+
 
   useEffect(() => {
     axiosInstance(`${import.meta.env.VITE_API}/tokens/refresh`).then((res) => {
@@ -18,6 +21,9 @@ function App() {
     });
   }, []);
 
+
+
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -25,7 +31,7 @@ function App() {
       children: [
         {
           path: '/',
-          element: <HomePage user={user} />,
+          element: <HomePage user={user} cook={cook} setCook={setCook}/>,
         },
         {
           path: '/signin',
