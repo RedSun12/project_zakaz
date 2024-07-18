@@ -4,6 +4,7 @@ module.exports = {
       'Recepts',
       [
         {
+          idAPI: 123456,
           title: 'Борщ',
           ingredients: 'Свекла, капуста, картофель, морковь',
           quantityOfIngredients: 4,
@@ -11,27 +12,13 @@ module.exports = {
           description: 'Всё просто',
         },
         {
+          idAPI: 235648,
           title: 'Салат',
           ingredients: 'Огурец, помидор, авокадо, зелень, лук',
           quantityOfIngredients: 5,
           time: 15,
           description: 'Всё просто',
-        },
-        {
-          title: 'Курица',
-          ingredients: 'Голень, соль, приправы',
-          quantityOfIngredients: 3,
-          time: 60,
-          description: 'Всё просто',
-        },
-        {
-          title: 'Пирог',
-          ingredients: 'Мука, сахар, яйца, вода, яблоки',
-          quantityOfIngredients: 5,
-          time: 70,
-          description: 'Всё просто',
-        },
-        
+        },        
       ],
       {},
     );

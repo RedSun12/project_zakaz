@@ -84,15 +84,17 @@ export default function Form({ user, cook, setCook }) {
 
   async function addRecept(el) {
     const recept = {
+      idUser: user.id,
+      idAPI: el.idMeal,
       title: el.strMeal,
-      ingredients: countIngridient(el).join('\n\r'),
+      ingredients: countIngridient(el).join('<br>'),
       description: el.strInstructions,
       image: el.strMealThumb,
       quantityOfIngredients: countIngridient(el).length,
       time: timeCook(el.strInstructions),
     };
     try {
-      const res = await axiosInstance.post(`${VITE_API}/recepts`, recept);
+      const res = await axiosInstance.post(`${VITE_API}/favorities/newOrder`, recept);
     } catch (error) {
       console.error(error);
     }

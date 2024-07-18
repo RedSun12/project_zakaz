@@ -6,8 +6,31 @@ const { verifyAccessToken } = require('../middlewares/verifyToken');
 
 router
   .post('/newOrder', verifyAccessToken, async (req, res) => {
-    const { idUser, idRecept } = req.body;
+    const {
+      idUser,
+      idAPI,
+      title,
+      ingredients,
+      description,
+      image,
+      quantityOfIngredients,
+      time,
+    } = req.body;
+    
     try {
+      const [recept] = await Recept.findOrCreate({
+        where: { idAPI },
+        defaults: {
+          idAPI,
+          title,
+          ingredients,
+          description,
+          image,
+          quantityOfIngredients,
+          time,
+        },
+      });
+      const idRecept = recept.id;
       const order = await Favorite.create({ idUser, idRecept });
       res.json(order);
     } catch (error) {
