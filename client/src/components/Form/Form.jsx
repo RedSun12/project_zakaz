@@ -15,24 +15,40 @@ import {
   Image,
 } from '@chakra-ui/react';
 
+
 const { VITE_API } = import.meta.env;
 
+
+
 export default function Form({ user, cook, setCook }) {
-  // const [inputs, setInputs] = useState({ name: '', description: '' });
+  const [text, setText] = useState({ title: '' });
 
-  // const changeHandler = (e) => {
-  //   setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  // };
-
-  // const submitHandler = async (e) => {
-  //   e.preventDefault();
-  // };
-
+  // console.log(cook);
+  const onSubmitHandlet = async (e) => {
+    e.preventDefault();
+    try {
+      if (text.length === 1) {
+        const response = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/search.php?f=${text.title}`
+        );
+        setCook(response.data.meals);
+        console.log(cook);
+      } else {
+        const response = await axios.get(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${text.title}`
+        );
+        setCook(response.data.meals);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+// потдтягиев на букву а
   useEffect(() => {
     const fetchApod = async () => {
       try {
         const response = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/search.php?f=b`
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=a`
         );
         setCook(response.data.meals);
         console.log(cook);
@@ -42,11 +58,12 @@ export default function Form({ user, cook, setCook }) {
       }
     };
     fetchApod();
-  }, [user]);
+  }, []);
 
   function countIngridient(data) {
     let result = [];
     for (let i = 1; i <= 20; i++) {
+
       if (
         data[`strIngredient${i}`] !== '' &&
         data[`strIngredient${i}`] !== null
@@ -95,12 +112,25 @@ export default function Form({ user, cook, setCook }) {
 
   return (
     <>
-      <div className={styles.wrapper} key={cook?.id}>
+      <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
+        <input
+          defaultValue={text?.title}
+          onChange={(e) =>
+            setText((prev) => ({ ...prev, title: e.target.value }))
+          }
+          placeholder="Введите одну букву или ингридиент"
+          name="title"
+        />
+        <button type="submit" className={styles.submitButton}>
+          создать
+        </button>
+      </form>
+      <div className={styles.wrapper}>
         <h1>Избранное</h1>
         {cook?.length ? (
-          cook.map((el) => (
-            <>
+          cook.map((el, i) => (
               <Card
+                key={`${el.idMeal}-${i}`}
                 direction={{ base: 'column', sm: 'row' }}
                 overflow="hidden"
                 variant="outline"
@@ -112,7 +142,7 @@ export default function Form({ user, cook, setCook }) {
                   alt="Your photo"
                 />
 
-                <Stack>
+                <Stack >
                   <CardBody>
                     <Heading color="blue.600" size="md">
                       {el.strMeal}
@@ -144,7 +174,6 @@ export default function Form({ user, cook, setCook }) {
                   </CardFooter>
                 </Stack>
               </Card>
-            </>
           ))
         ) : (
           <h3>Список избранного пуст</h3>
