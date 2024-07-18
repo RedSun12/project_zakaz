@@ -31,3 +31,7 @@
 .btns {
   margin-top: 20px;
 }
+
+.btnSign {
+  border-radius: 0;
+}
