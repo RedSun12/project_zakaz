@@ -14,20 +14,16 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
-
-
 const { VITE_API } = import.meta.env;
-
 
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
 
-  // console.log(cook);
   const onSubmitHandlet = async (e) => {
     e.preventDefault();
     try {
-      if (text.length === 1) {
+      if (text.title.length === 1) {
         const response = await axios.get(
           `https://www.themealdb.com/api/json/v1/1/search.php?f=${text.title}`
         );
@@ -43,6 +39,7 @@ export default function Form({ user, cook, setCook }) {
       console.log(err);
     }
   };
+
 // потдтягиев на букву а
   useEffect(() => {
     const fetchApod = async () => {
@@ -51,14 +48,13 @@ export default function Form({ user, cook, setCook }) {
           `https://www.themealdb.com/api/json/v1/1/search.php?s=a`
         );
         setCook(response.data.meals);
-        console.log(cook);
-        console.log(countIngridient(cook[0]), '****/////');
       } catch (err) {
         console.log(err);
       }
     };
     fetchApod();
   }, []);
+
 
   function countIngridient(data) {
     let result = [];
@@ -71,7 +67,6 @@ export default function Form({ user, cook, setCook }) {
         result.push(data[`strIngredient${i}`] + ' - ' + data[`strMeasure${i}`]);
       }
     }
-   
     return result;
   }
 
@@ -89,7 +84,6 @@ export default function Form({ user, cook, setCook }) {
     return totalSeconds < 300 ? 32 : Math.round(totalSeconds / 60);
   }
 
-  // const [recept, setRecept] = useState({
 
   async function addRecept(el) {
     console.log('addRecept  el:', el);
@@ -100,9 +94,7 @@ export default function Form({ user, cook, setCook }) {
       image: el.strMealThumb,
       quantityOfIngredients: countIngridient(el).length,
       time: timeCook(el.strInstructions),
-      
     };
-
     try {
       const res = await axiosInstance.post(`${VITE_API}/recepts`, recept);
     } catch (error) {
@@ -111,7 +103,8 @@ export default function Form({ user, cook, setCook }) {
   }
 
   return (
-    <>
+
+<div className={styles.wrapper}>
       <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
         <input
           defaultValue={text?.title}
@@ -125,7 +118,7 @@ export default function Form({ user, cook, setCook }) {
           создать
         </button>
       </form>
-      <div className={styles.wrapper}>
+      
         <h1>Избранное</h1>
         {cook?.length ? (
           cook.map((el, i) => (
@@ -179,6 +172,6 @@ export default function Form({ user, cook, setCook }) {
           <h3>Список избранного пуст</h3>
         )}
       </div>
-    </>
+      
   );
 }
