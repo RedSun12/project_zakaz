@@ -14,11 +14,12 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 const { VITE_API } = import.meta.env;
-
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
+  const navigate = useNavigate();
 
   const onSubmitHandlet = async (e) => {
     e.preventDefault();
@@ -28,7 +29,6 @@ export default function Form({ user, cook, setCook }) {
           `https://www.themealdb.com/api/json/v1/1/search.php?f=${text.title}`
         );
         setCook(response.data.meals);
-        console.log(cook);
       } else {
         const response = await axios.get(
           `https://www.themealdb.com/api/json/v1/1/search.php?s=${text.title}`
@@ -40,7 +40,7 @@ export default function Form({ user, cook, setCook }) {
     }
   };
 
-// потдтягиев на букву а
+  // потдтягиев на букву а
   useEffect(() => {
     const fetchApod = async () => {
       try {
@@ -55,11 +55,9 @@ export default function Form({ user, cook, setCook }) {
     fetchApod();
   }, []);
 
-
   function countIngridient(data) {
     let result = [];
     for (let i = 1; i <= 20; i++) {
-
       if (
         data[`strIngredient${i}`] !== '' &&
         data[`strIngredient${i}`] !== null
@@ -84,9 +82,7 @@ export default function Form({ user, cook, setCook }) {
     return totalSeconds < 300 ? 32 : Math.round(totalSeconds / 60);
   }
 
-
   async function addRecept(el) {
-    console.log('addRecept  el:', el);
     const recept = {
       idUser: user.id,
       idAPI: el.idMeal,
@@ -103,10 +99,80 @@ export default function Form({ user, cook, setCook }) {
       console.error(error);
     }
   }
+//сортировки
+  function sortDescending() {
+    setCook((prev) => {
+      prev.sort(
+        (a, b) => countIngridient(b).length - countIngridient(a).length
+      );
+      return [...prev];
+    });
+  }
+
+  function sortAscending() {
+    setCook((prev) => {
+      prev.sort(
+        (a, b) => countIngridient(a).length - countIngridient(b).length
+      );
+      return [...prev];
+    });
+  }
+
+  function sortDescendingTime() {
+    setCook((prev) => {
+      prev.sort(
+        (a, b) => timeCook(b.strInstructions) - timeCook(a.strInstructions)
+      );
+      return [...prev];
+    });
+  }
+
+  function sortAscendingTime() {
+    setCook((prev) => {
+      prev.sort(
+        (a, b) => timeCook(a.strInstructions) - timeCook(b.strInstructions)
+      );
+      return [...prev];
+    });
+  }
+
+  // useEffect(() => {
+  // }, [cook]);
 
   return (
+    <div className={styles.wrapper}>
+      <button
+        type="submit"
+        className={styles.button}
+        onClick={() => sortDescending()}
+      >
+        отсортировать по убыванию ингредиентов
+      </button>
 
-<div className={styles.wrapper}>
+      <button
+        type="submit"
+        className={styles.button}
+        onClick={() => sortAscending()}
+      >
+        отсортировать по возрастанию ингредиентов
+      </button>
+
+      <button
+        type="submit"
+        className={styles.button}
+        onClick={() => sortDescendingTime()}
+      >
+        сортировка времени по убывания
+      </button>
+
+      <button
+        type="submit"
+        className={styles.button}
+        onClick={() => sortAscendingTime()}
+      >
+        сортировка времени по возрастанию
+      </button>
+
       <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
         <input
           defaultValue={text?.title}
@@ -120,60 +186,58 @@ export default function Form({ user, cook, setCook }) {
           создать
         </button>
       </form>
-      
-        <h1>Избранное</h1>
-        {cook?.length ? (
-          cook.map((el, i) => (
-              <Card
-                key={`${el.idMeal}-${i}`}
-                direction={{ base: 'column', sm: 'row' }}
-                overflow="hidden"
-                variant="outline"
-              >
-                <Image
-                  objectFit="cover"
-                  maxW={{ base: '100%', sm: '200px' }}
-                  src={el.strMealThumb}
-                  alt="Your photo"
-                />
+      <h1>Избранное</h1>
+      {cook?.length ? (
+        cook.map((el, i) => (
+          <Card
+            key={`${el.idMeal}-${i}`}
+            direction={{ base: 'column', sm: 'row' }}
+            overflow="hidden"
+            variant="outline"
+          >
+            <Image
+              objectFit="cover"
+              maxW={{ base: '100%', sm: '200px' }}
+              src={el.strMealThumb}
+              alt="Your photo"
+            />
 
-                <Stack >
-                  <CardBody>
-                    <Heading color="blue.600" size="md">
-                      {el.strMeal}
-                    </Heading>
+            <Stack>
+              <CardBody>
+                <Heading color="blue.600" size="md">
+                  {el.strMeal}
+                </Heading>
 
-                    <Text color="black" py="2">
-                      Время приготовления: {timeCook(el.strInstructions)}мин.
-                    </Text>
-                    <Text color="black" py="2">
-                      Количество ингредиентов: {countIngridient(el).length}
-                    </Text>
-                  </CardBody>
+                <Text color="black" py="2">
+                  Время приготовления: {timeCook(el.strInstructions)}мин.
+                </Text>
+                <Text color="black" py="2">
+                  Количество ингредиентов: {countIngridient(el).length}
+                </Text>
+              </CardBody>
 
-                  <CardFooter>
-                    <Button
-                      variant="solid"
-                      colorScheme="red"
-                      // onClick={() => deleteHandler(el.id)}
-                    >
-                      Подробнее
-                    </Button>
-                    <Button
-                      variant="solid"
-                      colorScheme="black"
-                      onClick={() => addRecept(el)}
-                    >
-                      ❤️
-                    </Button>
-                  </CardFooter>
-                </Stack>
-              </Card>
-          ))
-        ) : (
-          <h3>Список избранного пуст</h3>
-        )}
-      </div>
-      
+              <CardFooter>
+                <Button
+                  variant="solid"
+                  colorScheme="red"
+                  // onClick={() => deleteHandler(el.id)}
+                >
+                  Подробнее
+                </Button>
+                <Button
+                  variant="solid"
+                  colorScheme="black"
+                  onClick={() => addRecept(el)}
+                >
+                  ❤️
+                </Button>
+              </CardFooter>
+            </Stack>
+          </Card>
+        ))
+      ) : (
+        <h3>Список избранного пуст</h3>
+      )}
+    </div>
   );
 }
