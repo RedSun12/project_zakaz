@@ -4,6 +4,7 @@ import { Input, Button } from '@chakra-ui/react';
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
 // import {EOL} from 'os';
+import { Link } from 'react-router-dom';
 import { BiSolidCommentError } from 'react-icons/bi';
 import {
   Card,
@@ -19,7 +20,8 @@ const { VITE_API } = import.meta.env;
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
-  const navigate = useNavigate();
+  const [liked, setLiked] = useState(false);
+  // const navigate = useNavigate();
 
   const onSubmitHandlet = async (e) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ export default function Form({ user, cook, setCook }) {
         const response = await axios.get(
           `https://www.themealdb.com/api/json/v1/1/search.php?s=a`
         );
+        console.log(cook)
         setCook(response.data.meals);
       } catch (err) {
         console.log(err);
@@ -83,6 +86,7 @@ export default function Form({ user, cook, setCook }) {
   }
 
   async function addRecept(el) {
+    setLiked(!liked);
     const recept = {
       idUser: user.id,
       idAPI: el.idMeal,
@@ -94,12 +98,15 @@ export default function Form({ user, cook, setCook }) {
       time: timeCook(el.strInstructions),
     };
     try {
-      const res = await axiosInstance.post(`${VITE_API}/favorities/newOrder`, recept);
+      const res = await axiosInstance.post(
+        `${VITE_API}/favorities/newOrder`,
+        recept
+      );
     } catch (error) {
       console.error(error);
     }
   }
-//сортировки
+  //сортировки
   function sortDescending() {
     setCook((prev) => {
       prev.sort(
@@ -136,108 +143,104 @@ export default function Form({ user, cook, setCook }) {
     });
   }
 
-  // useEffect(() => {
-  // }, [cook]);
-
   return (
-    <div className={styles.wrapper}>
-      <button
-        type="submit"
-        className={styles.button}
-        onClick={() => sortDescending()}
-      >
-        отсортировать по убыванию ингредиентов
-      </button>
-
-      <button
-        type="submit"
-        className={styles.button}
-        onClick={() => sortAscending()}
-      >
-        отсортировать по возрастанию ингредиентов
-      </button>
-
-      <button
-        type="submit"
-        className={styles.button}
-        onClick={() => sortDescendingTime()}
-      >
-        сортировка времени по убывания
-      </button>
-
-      <button
-        type="submit"
-        className={styles.button}
-        onClick={() => sortAscendingTime()}
-      >
-        сортировка времени по возрастанию
-      </button>
-
-      <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
-        <input
-          defaultValue={text?.title}
-          onChange={(e) =>
-            setText((prev) => ({ ...prev, title: e.target.value }))
-          }
-          placeholder="Введите одну букву или ингридиент"
-          name="title"
-        />
-        <button type="submit" className={styles.submitButton}>
-          создать
+    <div>
+      <div className={styles.wrapper}>
+        <button
+          type="submit"
+          className={styles.button}
+          onClick={() => sortDescending()}
+        >
+          отсортировать по убыванию ингредиентов
         </button>
-      </form>
-      <h1>Избранное</h1>
-      {cook?.length ? (
-        cook.map((el, i) => (
-          <Card
-            key={`${el.idMeal}-${i}`}
-            direction={{ base: 'column', sm: 'row' }}
-            overflow="hidden"
-            variant="outline"
-          >
-            <Image
-              objectFit="cover"
-              maxW={{ base: '100%', sm: '200px' }}
-              src={el.strMealThumb}
-              alt="Your photo"
-            />
 
-            <Stack>
-              <CardBody>
-                <Heading color="blue.600" size="md">
-                  {el.strMeal}
+        <button
+          type="submit"
+          className={styles.button}
+          onClick={() => sortAscending()}
+        >
+          отсортировать по возрастанию ингредиентов
+        </button>
+
+        <button
+          type="submit"
+          className={styles.button}
+          onClick={() => sortDescendingTime()}
+        >
+          сортировка времени по убывания
+        </button>
+
+        <button
+          type="submit"
+          className={styles.button}
+          onClick={() => sortAscendingTime()}
+        >
+          сортировка времени по возрастанию
+        </button>
+
+        <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
+          <input
+            defaultValue={text?.title}
+            onChange={(e) =>
+              setText((prev) => ({ ...prev, title: e.target.value }))
+            }
+            placeholder="Введите одну букву или ингридиент"
+            name="title"
+          />
+          <button type="submit" className={styles.submitButton}>
+            создать
+          </button>
+        </form>
+      </div>
+      <h1 className={styles.header}>Рецепты</h1>
+      <div className={styles.cards}>
+        {cook?.length ? (
+          cook.map((el, i) => (
+            <Card
+              className={styles.oneCard}
+              key={`${el.idMeal}-${i}`}
+              direction={{ base: 'column', sm: 'row' }}
+              overflow="hidden"
+              variant="outline"
+            >
+              <Image
+                objectFit="cover"
+                maxW={{ base: '100%', sm: '200px' }}
+                src={el.strMealThumb}
+                alt="Your photo"
+              />
+
+              <Stack>
+                <CardBody>
+                  <Button className={styles.btnHard}
+                    variant="solid"
+                    colorScheme="black"
+                    onClick={() => addRecept(el)}
+                  >
+                     {/* ❤️🤍  */}
+                     {liked ? '❤️ Liked' : '🤍 Like'}
+                  </Button>
+
+                  <Text color="black" py="2">
+                    Время приготовления: {timeCook(el.strInstructions)}мин.
+                  </Text>
+                  <Text color="black" py="2">
+                    Количество ингредиентов: {countIngridient(el).length}
+                  </Text>
+                </CardBody>
+
+                <Heading>
+                  <Link to={`/more/${el.idMeal}`}>
+                  {el.strMeal.length < 15 ? (<div className={styles.title1}>{el.strMeal}</div>) :
+                  (<div className={styles.title2}>{el.strMeal}</div>)}
+        
+                  </Link>
                 </Heading>
-
-                <Text color="black" py="2">
-                  Время приготовления: {timeCook(el.strInstructions)}мин.
-                </Text>
-                <Text color="black" py="2">
-                  Количество ингредиентов: {countIngridient(el).length}
-                </Text>
-              </CardBody>
-
-              <CardFooter>
-                <Button
-                  variant="solid"
-                  colorScheme="red"
-                  onClick={() => navigate(`/more/${el.idMeal}`)}
-                >
-                  Подробнее
-                </Button>
-                <Button
-                  variant="solid"
-                  colorScheme="black"
-                  onClick={() => addRecept(el)}
-                >
-                  ❤️
-                </Button>
-              </CardFooter>
-            </Stack>
-          </Card>
-        ))
-      ) : (
-        <h3>Список избранного пуст</h3>
-      )}
+              </Stack>
+            </Card>
+          ))
+        ) : null}
+      </div>
     </div>
   );
 }
