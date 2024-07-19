@@ -156,7 +156,7 @@ export default function Forma({ user, cook, setCook }) {
 
   return (
     <div>
-      <h1 className={styles.header}>Рецепты</h1>
+     
       <div className={styles.wrapper} >
       <Menu >
   <MenuButton marginRight={'20px'} fontSize={'30px'} height={'60px'} width={'200px'}as={Button} rightIcon={<ArrowUpDownIcon />}>

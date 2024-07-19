@@ -60,6 +60,7 @@
   font-weight: none;
   display: flex;
   justify-content: center;
+  z-index: 200;
 }
 /* .inputs {
   width: 100%;

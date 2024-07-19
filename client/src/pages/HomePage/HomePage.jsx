@@ -13,8 +13,9 @@ export default function HomePage({ user, setCook, cook }) {
 
   return (
     <div className={styles.wrapper}>
-     <div className={styles.fon}></div>
+      <div className={styles.fon}></div> 
         <>
+       <h1 className={styles.header}>Рецепты</h1>
           <Form cook={cook} setCook={setCook} user={user} />
         </>
       {/* ) : (
