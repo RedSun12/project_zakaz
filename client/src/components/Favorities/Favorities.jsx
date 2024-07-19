@@ -20,12 +20,14 @@ export default function Favorities({ user }) {
   const [orders, setOrder] = useState();
 
   useEffect(() => {
-    axiosInstance
-      .get(`${import.meta.env.VITE_API}/favorities/${userId}`)
-      .then((res) => {
-        setOrder(res.data);
-      })
-      .catch((err) => console.error(err));
+    if (user) {
+      axiosInstance
+        .get(`${import.meta.env.VITE_API}/favorities/${userId}`)
+        .then((res) => {
+          setOrder(res.data);
+        })
+        .catch((err) => console.error(err));
+    }
   }, [userId]);
 
   const deleteHandler = async (id) => {
@@ -37,57 +39,59 @@ export default function Favorities({ user }) {
   };
   return (
     <div key={orders?.id} className={styles.wrapper}>
-      <h1>Избранное</h1>
-      {orders?.length ? (
-        orders.map((el) => (
-          <>
-            <Card
-              direction={{ base: 'column', sm: 'row' }}
-              overflow="hidden"
-              variant="outline"
-            >
-              <Image
-                objectFit="cover"
-                maxW={{ base: '100%', sm: '200px' }}
-                src={el.image}
-                alt="Your photo"
-              />
+      <h1 className={styles.header}>Избранное</h1>
+      <div className={styles.cards}>
+        {orders?.length ? (
+          orders.map((el) => (
+         
+              <Card
+                key={el?.id}
+                className={styles.oneCard}
+                direction={{ base: 'column', sm: 'row' }}
+                overflow="hidden"
+                variant="outline"
+              >
+                <Image
+                  objectFit="cover"
+                  maxW={{ base: '100%', sm: '200px' }}
+                  src={el.image}
+                  alt="Your photo"
+                />
 
-              <Stack>
-                <CardBody>
-                  <Heading color="blue.600" size="md">
-                    {el.title}
-                  </Heading>
-
-                  <Text color="black" py="2">
-                    Время приготовления: {el.time} мин.
-                  </Text>
-                  <Text color="black" py="2">
-                    Количество ингредиентов: {el.quantityOfIngredients}
-                  </Text>
-                </CardBody>
-
-                <CardFooter>
-                  <Link to={`/recepts/${el.id}`}>
-                    <Button variant="solid" colorScheme="green">
-                      Подробнее
+                <Stack>
+                  <CardBody>
+                    <Link to={`/recepts/${el.id}`}>
+                      <Button variant="solid" colorScheme="green">
+                        Подробнее
+                      </Button>
+                    </Link>
+                    <Button className={styles.btnHard}
+                      variant="solid"
+                      colorScheme="white"
+                      onClick={() => deleteHandler(el.id)}
+                    >
+                      ❌
                     </Button>
-                  </Link>
-                  <Button
-                    variant="solid"
-                    colorScheme="red"
-                    onClick={() => deleteHandler(el.id)}
-                  >
-                    Удалить
-                  </Button>
-                </CardFooter>
-              </Stack>
-            </Card>
-          </>
-        ))
-      ) : (
-        <h3>Список избранного пуст</h3>
-      )}
+
+                    <Text color="black" py="3">
+                      Время приготовления: {el.time} мин.
+                    </Text>
+                    <Text color="black" py="2">
+                      Количество ингредиентов: {el.quantityOfIngredients}
+                    </Text>
+                  </CardBody>
+
+                  <Heading>
+                    <div className={styles.title}>{el.title}</div>
+                  </Heading>
+                </Stack>
+              </Card>
+          
+          ))
+        ) : (
+          <h3>Список избранного пуст</h3>
+        )}
+      </div>
     </div>
   );
 }

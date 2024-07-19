@@ -5,8 +5,12 @@
   justify-content: center;
   align-items: center;
   /* background-color: blanchedalmond; */
-  
+
   padding: 20px;
+  background-image: url(https://bogatyr.club/uploads/posts/2023-03/1679113607_bogatyr-club-p-kukhnya-nochyu-fon-foni-pinterest-61.jpg);
+  background-attachment: fixed;
+  background-size: 100%;
+
 }
 
 /* body {

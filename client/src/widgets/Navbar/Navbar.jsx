@@ -68,9 +68,7 @@ export default function Navbar({ user, setUser }) {
                   </MenuList>
                 </Menu>
       )}
-      <Text>
-        Ешьте вкусно, ешьте много
-      </Text>
+        <h1 className={styles.name}>Ешьте вкусно, ешьте много</h1>
       <div className={styles.right}>
         {user?.username ? (
           <>

@@ -8,23 +8,13 @@ import { Spinner } from '@chakra-ui/react';
 const { VITE_API } = import.meta.env;
 
 export default function HomePage({ user, setCook, cook }) {
-  // const [entries, setEntries] = useState([]);
-
-  // useEffect(() => {
-  //   axiosInstance
-  //     .get(`${VITE_API}/recepts`)
-  //     .then((res) => {
-  //       setEntries(res.data);
-  //     })
-  //     .catch((err) => console.error(err));
-  // }, []);
+ 
 
   return (
     <div className={styles.wrapper}>
      
         <>
           <Form cook={cook} setCook={setCook} user={user} />
-          {/* <List data={entries} setEntries={setEntries} user={user} /> */}
         </>
       {/* ) : (
         <Spinner
