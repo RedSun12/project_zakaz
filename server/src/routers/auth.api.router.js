@@ -1,65 +1,78 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { User } = require('../../db/models');
-const generateToken = require('../utils/generateToken');
-const cookiesConfig = require('../configs/cookiesConfig');
-const { where } = require('sequelize');
+const cookieConfig = require('../configs/cookiesConfig');
+const generateTokens = require('../utils/generateToken');
 
-router
-  .post('/signup', async (req, res) => {
-    const { username, email, password } = req.body;
+router.post('/signup', async (req, res) => {
+  const { username, email, password, isSeller = false } = req.body;
 
-    if (!(username && email && password)) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
+  if (!(username && email && password)) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
 
-    const [user, created] = await User.findOrCreate({
+  try {
+    const [user, isCreated] = await User.findOrCreate({
       where: { email },
-      defaults: { username, email, password: await bcrypt.hash(password, 10) },
+      defaults: {
+        username,
+        email,
+        password: await bcrypt.hash(password, 10),
+        isSeller,
+      },
     });
 
+    if (!isCreated) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
     const plainUser = user.get();
     delete plainUser.password;
 
-    if (!created) res.status(403).json({ message: 'User already exists' });
+    const { accessToken, refreshToken } = generateTokens({ user: plainUser });
 
-    //! Генерируем access и refresh
-    const { accessToken, refreshToken } = generateToken({ user: plainUser });
-
-    //! Устанавливаем cookie с access токеном
     res
-      .cookie('refreshToken', refreshToken, cookiesConfig.refresh)
+      .cookie('refreshToken', refreshToken, cookieConfig.refresh)
       .json({ user: plainUser, accessToken });
-  })
-  .post('/signin', async (req, res) => {
-    const { email, password } = req.body;
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(400);
+  }
+});
 
-    if (!(email && password)) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
+router.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+  if (!(email && password)) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
 
-    if (!user) {
-      res.status(401).json({ message: 'Incorrect user or password' });
-    }
+  const user = await User.findOne({ where: { email } });
 
-    const correctPass = await bcrypt.compare(password, user.password);
-    if (!correctPass) {
-      res.status(401).json({ message: 'Incorrect user or password' });
-    }
+  if (!user) {
+    return res.status(401).json({ message: 'No user find' });
+  }
+  const isCorrectPassword = await bcrypt.compare(password, user.password);
 
-    const plainUser = user.get();
-    delete plainUser.password;
+  if (!isCorrectPassword) {
+    return res.status(401).json({ message: 'Incorrect email or password' });
+  }
+  const plainUser = user.get();
+  delete plainUser.password;
 
-    const { accessToken, refreshToken } = generateToken({ user: plainUser });
-    
-    res
-      .cookie('refreshToken', refreshToken, cookiesConfig.refresh)
-      .json({ user: plainUser, accessToken });
-  })
-  .get('/logout', (req, res) => {
+  const { accessToken, refreshToken } = generateTokens({ user: plainUser });
+
+  res
+    .cookie('refreshToken', refreshToken, cookieConfig.refresh)
+    .json({ user: plainUser, accessToken });
+});
+
+router.get('/logout', async (req, res) => {
+  try {
     res.clearCookie('refreshToken').sendStatus(200);
-  });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(400);
+  }
+});
 
 module.exports = router;

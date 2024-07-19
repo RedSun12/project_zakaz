@@ -79,7 +79,7 @@ export default function Navbar({ user, setUser }) {
           {/* <iframe src="../../../public/scovoroda.html">
             <p> display</p>
           </iframe> */}
-          <Img width={'60px'} src='../../../public/food.svg'/>
+          <Img width={'60px'} src='../../../food.svg'/>
             {/* <img src='../../../public'> */}
           </>
         )}
