@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './Form.module.css';
-import { Input, Button } from '@chakra-ui/react';
+import { Input, Button, Menu, MenuButton, MenuList, MenuItem, MenuGroup, MenuDivider } from '@chakra-ui/react';
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
 // import {EOL} from 'os';
-import { Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 import { BiSolidCommentError } from 'react-icons/bi';
 import {
   Card,
@@ -16,9 +16,10 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, ChevronDownIcon, EmailIcon, SearchIcon } from '@chakra-ui/icons';
 const { VITE_API } = import.meta.env;
 
-export default function Form({ user, cook, setCook }) {
+export default function Forma({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
   const [liked, setLiked] = useState(false);
   // const navigate = useNavigate();
@@ -145,54 +146,59 @@ export default function Form({ user, cook, setCook }) {
 
   return (
     <div>
+      <h1 className={styles.header}>Рецепты</h1>
       <div className={styles.wrapper}>
-        <button
-          type="submit"
-          className={styles.button}
-          onClick={() => sortDescending()}
-        >
-          отсортировать по убыванию ингредиентов
-        </button>
 
-        <button
-          type="submit"
-          className={styles.button}
-          onClick={() => sortAscending()}
-        >
-          отсортировать по возрастанию ингредиентов
-        </button>
 
-        <button
-          type="submit"
-          className={styles.button}
-          onClick={() => sortDescendingTime()}
-        >
-          сортировка времени по убывания
-        </button>
+      <Menu >
+  <MenuButton marginRight={'20px'} as={Button} rightIcon={<ArrowUpDownIcon />}>
+    Сортировка
+  </MenuButton>
+  <MenuList>
+  <MenuGroup color={'black'} title='По ингридиентам'>
+  <MenuDivider />
 
-        <button
-          type="submit"
-          className={styles.button}
-          onClick={() => sortAscendingTime()}
-        >
-          сортировка времени по возрастанию
-        </button>
+    <MenuItem color={'black'} icon={<ArrowUpIcon/>} minH='40px' onClick={() => sortAscending()}>
+      <Text color={'black'}>По возрастанию</Text>
+    </MenuItem>
+    <MenuItem color={'black'} icon={<ArrowDownIcon/>} onClick={() => sortDescending()} minH='48px'>
+      <Text color={'black'}>По убыванию</Text>
+    </MenuItem>
+    </MenuGroup>
+    <MenuDivider />
+  <MenuGroup color={'black'} title='По времени'>
+  <MenuDivider />
+    <MenuItem color={'black'} icon={<ArrowUpIcon/>} minH='40px' onClick={() => sortAscendingTime()}>
+      <Text color={'black'}>По возрастанию</Text>
+    </MenuItem>
+    <MenuItem color={'black'} icon={<ArrowDownIcon/>} minH='40px' onClick={() => sortDescendingTime()}>
+      <Text color={'black'}>По убыванию</Text>
+    </MenuItem>
+        </MenuGroup>
+  </MenuList>
+</Menu>
+        {/* <Form></Form> */}
+        <Form  onSubmit={onSubmitHandlet} className={styles.todoContainer}>
+          <div className={styles.form}>
 
-        <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
-          <input
+          <Input
+            backgroundColor={'white'}
+            color={'black'}
             defaultValue={text?.title}
             onChange={(e) =>
               setText((prev) => ({ ...prev, title: e.target.value }))
             }
-            placeholder="Введите одну букву или ингридиент"
+            placeholder="Поиск по рецептам"
             name="title"
-          />
-          <button type="submit" className={styles.submitButton}>
-            создать
-          </button>
-        </form>
+            />
+          
+          <Button marginLeft={'10px'} type="submit" leftIcon={<SearchIcon />} colorScheme='teal' variant='solid'>
+            Поиск
+          </Button>
+            </div>
+        </Form>
       </div>
-      <h1 className={styles.header}>Рецепты</h1>
+      
       <div className={styles.cards}>
         {cook?.length ? (
           cook.map((el, i) => (

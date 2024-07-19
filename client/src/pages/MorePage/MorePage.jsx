@@ -60,22 +60,23 @@ export default function MorePage({ user, setCook, cook }) {
   return (
     <>
     <div className={styles.wrapper}>
+    <div className={styles.fon}></div>
       <Card className={styles.card}>
         <CardBody>
           <Text className={styles.head}>
             <Image display={'flex'} width={'350px'} src={more?.strMealThumb} alt="Your photo" borderRadius="lg" />
             <Text marginLeft={'50px'}>
-              <Text fontSize={'40px'} fontWeight={'1000'} color="blue.600">
+              <Text className={styles.big} fontSize={'80px'} fontWeight={'1000'} color="black">
                 {more?.strMeal}
               </Text>
               {/* <Heading color="blue.600">{more?.strMeal}</Heading> */}
-              <Text color="blue.600" fontSize="2xl">
+              <Text color="blue.800" fontSize="2xl">
                 Страна происхождения: {more?.strArea}
               </Text>
-              <Text color="blue.600" fontSize="2xl">
+              <Text color="blue.800" fontSize="2xl">
                 Время приготовления: {timeCook(more)} мин.
               </Text>
-              <Text color="blue.600" fontSize="2xl">
+              <Text color="blue.800" fontSize="2xl">
                 Количество ингредиентов: {countIngridient(more).length} шт.
               </Text>
               <br />
