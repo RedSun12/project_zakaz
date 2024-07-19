@@ -31,8 +31,11 @@ router
         },
       });
       const idRecept = recept.id;
-      const order = await Favorite.create({ idUser, idRecept });
-      res.json(order);
+      const orderLast = await Favorite.findOne({ where: { idUser, idRecept } });
+      if (!orderLast) {
+        const order = await Favorite.create({ idUser, idRecept });
+        res.json(order);
+      }
     } catch (error) {
       console.error(error);
       res.sendStatus(400);

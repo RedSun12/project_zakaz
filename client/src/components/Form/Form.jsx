@@ -3,9 +3,7 @@ import styles from './Form.module.css';
 import { Input, Button } from '@chakra-ui/react';
 import axios from 'axios';
 import axiosInstance from '../../axiosInstance';
-// import {EOL} from 'os';
 import { Link } from 'react-router-dom';
-import { BiSolidCommentError } from 'react-icons/bi';
 import {
   Card,
   CardBody,
@@ -15,48 +13,51 @@ import {
   Text,
   Image,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+
 const { VITE_API } = import.meta.env;
 
 export default function Form({ user, cook, setCook }) {
   const [text, setText] = useState({ title: '' });
   const [liked, setLiked] = useState(false);
-  // const navigate = useNavigate();
+  const [like, setLike] = useState([]);
+  const userId = user?.id;
 
-  const onSubmitHandlet = async (e) => {
-    e.preventDefault();
-    try {
-      if (text.title.length === 1) {
-        const response = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/search.php?f=${text.title}`
-        );
-        setCook(response.data.meals);
-      } else {
-        const response = await axios.get(
-          `https://www.themealdb.com/api/json/v1/1/search.php?s=${text.title}`
-        );
-        setCook(response.data.meals);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // потдтягиев на букву а
   useEffect(() => {
     const fetchApod = async () => {
       try {
         const response = await axios.get(
           `https://www.themealdb.com/api/json/v1/1/search.php?s=a`
         );
-        console.log(cook)
         setCook(response.data.meals);
       } catch (err) {
         console.log(err);
       }
     };
     fetchApod();
-  }, []);
+
+    if (user) {
+      axiosInstance
+        .get(`${VITE_API}/favorities/${userId}`)
+        .then((res) => {
+          setLike(res.data);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [user]);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const query = text.title.length === 1 
+        ? `https://www.themealdb.com/api/json/v1/1/search.php?f=${text.title}`
+        : `https://www.themealdb.com/api/json/v1/1/search.php?s=${text.title}`;
+
+      const response = await axios.get(query);
+      setCook(response.data.meals);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   function countIngridient(data) {
     let result = [];
@@ -71,7 +72,6 @@ export default function Form({ user, cook, setCook }) {
     return result;
   }
 
-  // количество времени
   function timeCook(text) {
     const regex = /\b(\d+).(hou|min|sec)/g;
     const timeUnits = { hou: 3600, min: 60, sec: 1 };
@@ -86,7 +86,6 @@ export default function Form({ user, cook, setCook }) {
   }
 
   async function addRecept(el) {
-    setLiked(!liked);
     const recept = {
       idUser: user.id,
       idAPI: el.idMeal,
@@ -102,11 +101,13 @@ export default function Form({ user, cook, setCook }) {
         `${VITE_API}/favorities/newOrder`,
         recept
       );
+      setLiked(!liked); // Обновляем состояние лайков
+      setLike((prev) => [...prev, { title: el.strMeal }]);
     } catch (error) {
       console.error(error);
     }
   }
-  //сортировки
+
   function sortDescending() {
     setCook((prev) => {
       prev.sort(
@@ -143,6 +144,12 @@ export default function Form({ user, cook, setCook }) {
     });
   }
 
+  function likes(n) {
+    if (userId) {
+      return like?.some((el) => el.title === n);
+    }
+  }
+
   return (
     <div>
       <div className={styles.wrapper}>
@@ -153,6 +160,7 @@ export default function Form({ user, cook, setCook }) {
         >
           отсортировать по убыванию ингредиентов
         </button>
+
 
         <button
           type="submit"
@@ -167,7 +175,7 @@ export default function Form({ user, cook, setCook }) {
           className={styles.button}
           onClick={() => sortDescendingTime()}
         >
-          сортировка времени по убывания
+          сортировка времени по убыванию
         </button>
 
         <button
@@ -178,13 +186,13 @@ export default function Form({ user, cook, setCook }) {
           сортировка времени по возрастанию
         </button>
 
-        <form onSubmit={onSubmitHandlet} className={styles.todoContainer}>
+        <form onSubmit={onSubmitHandler} className={styles.todoContainer}>
           <input
             defaultValue={text?.title}
             onChange={(e) =>
               setText((prev) => ({ ...prev, title: e.target.value }))
             }
-            placeholder="Введите одну букву или ингридиент"
+            placeholder="Введите одну букву или ингредиент"
             name="title"
           />
           <button type="submit" className={styles.submitButton}>
@@ -217,12 +225,11 @@ export default function Form({ user, cook, setCook }) {
                     colorScheme="black"
                     onClick={() => addRecept(el)}
                   >
-                     {/* ❤️🤍  */}
-                     {liked ? '❤️ Liked' : '🤍 Like'}
+                    {likes(el.strMeal) ? '❤️ Liked' : '🤍 Like'}
                   </Button>
 
                   <Text color="black" py="2">
-                    Время приготовления: {timeCook(el.strInstructions)}мин.
+                    Время приготовления: {timeCook(el.strInstructions)} мин.
                   </Text>
                   <Text color="black" py="2">
                     Количество ингредиентов: {countIngridient(el).length}
@@ -231,9 +238,11 @@ export default function Form({ user, cook, setCook }) {
 
                 <Heading>
                   <Link to={`/more/${el.idMeal}`}>
-                  {el.strMeal.length < 15 ? (<div className={styles.title1}>{el.strMeal}</div>) :
-                  (<div className={styles.title2}>{el.strMeal}</div>)}
-        
+                    {el.strMeal.length < 15 ? (
+                      <div className={styles.title1}>{el.strMeal}</div>
+                    ) : (
+                      <div className={styles.title2}>{el.strMeal}</div>
+                    )}
                   </Link>
                 </Heading>
               </Stack>
