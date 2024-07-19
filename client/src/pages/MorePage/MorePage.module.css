@@ -1,26 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC:400,700);
 
 .wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-
-  /* background-color: blanchedalmond; */
-
+  position: relative;
+  z-index: 2;
   padding: 20px;
-}
-
-.title {
+  /* font-family: 'Amatic SC', cursive;
+  font-size: 40px; */
   font-family: "Roboto Slab", serif;
-  font-optical-sizing: auto;
+  /* font-optical-sizing: auto; */
   font-weight: weight;
   font-style: normal;
 }
 
+.title {
+  z-index: 3;
+}
+
 body {
   animation: color 9s infinite linear;
+  margin: 0;
+  overflow-x: hidden;
+  z-index: 0;
 }
 
 @keyframes color {
@@ -30,4 +35,70 @@ body {
   60%  { background: #FCCA00; }
   80%  { background: #33CC36; }
   100% { background: #33CCCC; }
+}
+
+:root {
+  --background: #005;
+  --primary: #88D5BF;
+  --secondary: #5D6BF8;
+  --third: #e27fcb;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* height: 100vh; */
+  justify-content: center;
+  z-index: 0;
+}
+
+.shape {
+  /* position: fixed; */
+  background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+  animation: morph 8s ease-in-out infinite;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  height: 1200px;
+  transition: all 1s ease-in-out;
+  width: 1200px;
+  z-index: 1;
+}
+
+.text {
+  color: black;
+  /* color: #dfdfdf; */
+}
+
+.card {
+  width: 70%;
+  padding: 20px;
+  opacity: 0.85;
+}
+
+.head {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* align-items: center; */
+}
+
+@keyframes morph {
+  0% {
+      border-radius:  60% 40% 30% 70% / 60% 30% 70% 40%;
+      background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+  } 
+  
+  50% {
+      border-radius:  30% 60% 70% 40% / 50% 60% 30% 60%;
+      background: linear-gradient(45deg, var(--third) 0%, var(--secondary) 100%);
+  }
+  
+  100% {
+    border-radius:  60% 40% 30% 70% / 60% 30% 70% 40%;
+    background: linear-gradient(45deg, var(--primary) 0%, var(--secondary) 100%);
+  } 
 }

@@ -13,27 +13,15 @@
 
 }
 
-body {
+/* body {
   animation: color 9s infinite linear;
 }
 
 @keyframes color {
-  0% {
-    background: #33cccc;
-  }
-  20% {
-    background: #33cc36;
-  }
-  40% {
-    background: #b8cc33;
-  }
-  60% {
-    background: #fcca00;
-  }
-  80% {
-    background: #33cc36;
-  }
-  100% {
-    background: #33cccc;
-  }
-}
+  0%   { background: #33CCCC; }
+  20%  { background: #33CC36; }
+  40%  { background: #B8CC33; }
+  60%  { background: #FCCA00; }
+  80%  { background: #33CC36; }
+  100% { background: #33CCCC; }
+} */

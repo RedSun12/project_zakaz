@@ -18,14 +18,18 @@
   font-size: 40px;
 }
 
+.nameAva {
+  display: flex;
+}
+
 .name {
   transform: scaleY(0.6);
   letter-spacing: 10px;
   font-size: 55px;
-
 }
+
 .left {
-  width: 200px;
+  width: 240px;
 }
 
 .right {
@@ -40,12 +44,14 @@
 
 .nickName {
   display: flex;
-    /* align-content: center; */
+  cursor: pointer;
   align-items: center;
 }
 
 .ava {
+  margin-right: 15px;
   transition: .5s;
+  cursor: pointer;
   margin: 30px;
 }
 
