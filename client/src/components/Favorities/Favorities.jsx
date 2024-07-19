@@ -39,6 +39,7 @@ export default function Favorities({ user }) {
   };
   return (
     <div key={orders?.id} className={styles.wrapper}>
+      <div className={styles.fon}></div>
       <h1 className={styles.header}>Избранное</h1>
       <div className={styles.cards}>
         {orders?.length ? (
