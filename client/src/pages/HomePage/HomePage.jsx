@@ -4,6 +4,7 @@ import List from '../../components/List/List';
 import styles from './HomePage.module.css';
 import axiosInstance from '../../axiosInstance';
 import { Spinner } from '@chakra-ui/react';
+import Forma from '../../components/Form/Form';
 
 const { VITE_API } = import.meta.env;
 
