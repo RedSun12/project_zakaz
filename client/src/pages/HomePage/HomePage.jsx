@@ -7,26 +7,16 @@ import { Spinner } from '@chakra-ui/react';
 
 const { VITE_API } = import.meta.env;
 
-export default function HomePage({ user }) {
-  const [entries, setEntries] = useState([]);
-
-  useEffect(() => {
-    axiosInstance
-      .get(`${VITE_API}/whales`)
-      .then((res) => {
-        setEntries(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+export default function HomePage({ user, setCook, cook }) {
+ 
 
   return (
     <div className={styles.wrapper}>
-      {entries?.length ? (
+     
         <>
-          <Form setEntries={setEntries} user={user} />
-          <List data={entries} setEntries={setEntries} user={user} />
+          <Form cook={cook} setCook={setCook} user={user} />
         </>
-      ) : (
+      {/* ) : (
         <Spinner
           style={{
             position: 'absolute',
@@ -39,8 +29,8 @@ export default function HomePage({ user }) {
           emptyColor='gray.200'
           color='blue.500'
           size='xl'
-        />
-      )}
+        /> */}
+      
     </div>
   );
 }

@@ -6,9 +6,14 @@ import SigninPage from './pages/SigninPage/SigninPage';
 import SignupPage from './pages/SignupPage/SignupPage';
 import { useEffect, useState } from 'react';
 import axiosInstance, { setAccessToken } from './axiosInstance';
+import Favorities from './components/Favorities/Favorities';
+import InfoCard from './components/InfoCard/InfoCard';
+import MorePage from './pages/MorePage/MorePage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 
 function App() {
   const [user, setUser] = useState();
+  const [cook, setCook] = useState({});
 
   useEffect(() => {
     axiosInstance(`${import.meta.env.VITE_API}/tokens/refresh`).then((res) => {
@@ -24,7 +29,7 @@ function App() {
       children: [
         {
           path: '/',
-          element: <HomePage user={user} />,
+          element: <HomePage user={user} cook={cook} setCook={setCook} />,
         },
         {
           path: '/signin',
@@ -33,6 +38,29 @@ function App() {
         {
           path: '/signup',
           element: <SignupPage setUser={setUser} />,
+        },
+        {
+          path: '/favorities',
+          element: <Favorities user={user} setUser={setUser} />,
+        },
+        {
+          path: '/recepts/:id',
+          element: (
+            <InfoCard
+              user={user}
+              setUser={setUser}
+              cook={cook}
+              setCook={setCook}
+            />
+          ),
+        },
+        {
+          path: '/more/:idMeal',
+          element: <MorePage user={user} cook={cook} setCook={setCook} />,
+        },
+        {
+          path: '/profile',
+          element: <ProfilePage user={user} cook={cook} setCook={setCook} />,
         },
       ],
     },

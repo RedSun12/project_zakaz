@@ -7,16 +7,33 @@ import { useNavigate } from 'react-router-dom';
 const { VITE_API } = import.meta.env;
 
 export default function AuthForm({ title, type = 'signin', setUser }) {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [inputs, setInputs] = useState({});
   // const navigate = useNavigate();
-
+  
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
-
+  
   const changeHandler = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+  
+  const OverlayOne = () => (
+    <ModalOverlay
+    bg='blackAlpha.300'
+    backdropFilter='blur(10px) hue-rotate(90deg)'
+    />
+  )
+  const [overlay, setOverlay] = React.useState(<OverlayOne />)
+  
+  // const OverlayTwo = () => (
+  //   <ModalOverlay
+  //     bg='none'
+  //     backdropFilter='auto'
+  //     backdropInvert='80%'
+  //     backdropBlur='2px'
+  //   />
+  // )
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -29,19 +46,25 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
   return (
     <>
     {type === 'signin' && (
-      <><Button onClick={onOpen}>Вход</Button>
+      <><Button fontSize={'25px'} className={styles.btnSing} width={'100%'} onClick={() => {
+        setOverlay(<OverlayOne />)
+        onOpen()
+      }}>Вход</Button>
       <Modal
+          isCentered
           className={styles.wrapper}
           initialFocusRef={initialRef}
           finalFocusRef={finalRef}
           isOpen={isOpen}
           onClose={onClose}
         >
+          {overlay}
           <ModalContent>
-            <ModalHeader>Вход</ModalHeader><ModalCloseButton /><ModalBody pb={6}>
+            <ModalHeader color={'black'}>Вход</ModalHeader><ModalCloseButton /><ModalBody pb={6}>
               <FormControl>
-                <FormLabel>Email:</FormLabel>
+                <FormLabel color={'black'}>Email:</FormLabel>
                 <Input
+                  color={'black'}
                   ref={initialRef}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
@@ -50,10 +73,10 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                   value={inputs?.email}
                   placeholder='Эл.почта' />
               </FormControl>
-
               <FormControl mt={4}>
-                <FormLabel>Пароль:</FormLabel>
+                <FormLabel color={'black'}>Пароль:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='password'
@@ -64,29 +87,35 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
             </ModalBody>
             <ModalFooter>
               <Button onClick={submitHandler} colorScheme='blue' mr={3}>
-                Save
+                Войти
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Отмена</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
         <br /></>
           )}
           {type === 'signup' && (
-                  <><Button onClick={onOpen}>Регистрация</Button>
+                  <><Button fontSize={'25px'} width={'100%'} onClick={() => {
+                    setOverlay(<OverlayOne />)
+                    onOpen()
+                  }}>Регистрация</Button>
                   <Modal
+                  isCentered
           className={styles.wrapper}
           initialFocusRef={initialRef}
           finalFocusRef={finalRef}
           isOpen={isOpen}
           onClose={onClose}
         >
+          {overlay}
           <ModalOverlay />
           <ModalContent >
-            <ModalHeader>Регистрация</ModalHeader><ModalCloseButton /><ModalBody pb={6}>
+            <ModalHeader color={'black'}>Регистрация</ModalHeader><ModalCloseButton /><ModalBody pb={6}>
               <FormControl>
-                <FormLabel>Имя пользователя:</FormLabel>
+                <FormLabel color={'black'}>Имя пользователя:</FormLabel>
                 <Input
+                  color={'black'}
                   ref={initialRef}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
@@ -96,8 +125,9 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               </FormControl>
 
               <FormControl mt={4}>
-                <FormLabel>Email:</FormLabel>
+                <FormLabel color={'black'}>Email:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='email'
@@ -106,8 +136,9 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
                   placeholder='Эл.почта' />
               </FormControl>
               <FormControl mt={4}>
-                <FormLabel>Пароль:</FormLabel>
+                <FormLabel color={'black'}>Пароль:</FormLabel>
                 <Input
+                  color={'black'}
                   onChange={changeHandler}
                   borderColor='#3f3e3e'
                   type='password'
@@ -117,9 +148,9 @@ export default function AuthForm({ title, type = 'signin', setUser }) {
               </FormControl>
             </ModalBody><ModalFooter>
               <Button onClick={submitHandler} colorScheme='blue' mr={3}>
-                Save
+                Регистрация
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Отмена</Button>
             </ModalFooter>
           </ModalContent>
         </Modal></>

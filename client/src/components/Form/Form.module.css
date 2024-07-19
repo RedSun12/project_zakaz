@@ -1,21 +1,55 @@
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC:400,700);
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: space-evenly;  */
   align-items: center;
-
-  width: 40vw;
-  
-  padding: 20px;
-  border: 1px solid #3f3e3e ;
   border-radius: 10px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  /* position: relative; */
+}
+
+.oneCard {
+  margin: 20px;
+  border-style: none;
+  width: 470px;
 }
 
 .head {
   margin-bottom: 20px;
 }
 
-.inputs {
+.title1,
+.title2 {
+  color: black;
+  font-family: 'Amatic SC', cursive;
+  font-weight: none;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.title1 {
+  font-size: 60px;
+}
+
+.title2 {
+  font-size: 40px;
+}
+.header {
+  font-family: 'Amatic SC', cursive;
+  font-size: 80px;
+  font-weight: none;
+  display: flex;
+  justify-content: center;
+}
+/* .inputs {
   width: 100%;
   height: 90px;
 
@@ -23,8 +57,28 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-}
+} */
 
 .btns {
   margin-top: 20px;
+}
+
+.btnHard {
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  left: 180px;
+  /* width: 100px;
+ height: 100px; */
+}
+/* .todoContainer {
+  color: black;
+} */
+
+.submitButton {
+  background-color: aquamarine;
+}
+
+.button {
+  background-color: blueviolet;
 }
