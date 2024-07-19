@@ -13,7 +13,7 @@ export default function HomePage({ user, setCook, cook }) {
 
   return (
     <div className={styles.wrapper}>
-     
+     <div className={styles.fon}></div>
         <>
           <Form cook={cook} setCook={setCook} user={user} />
         </>

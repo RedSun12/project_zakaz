@@ -157,13 +157,13 @@ export default function Forma({ user, cook, setCook }) {
   return (
     <div>
       <h1 className={styles.header}>Рецепты</h1>
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} >
       <Menu >
-  <MenuButton marginRight={'20px'} as={Button} rightIcon={<ArrowUpDownIcon />}>
+  <MenuButton marginRight={'20px'} fontSize={'30px'} height={'60px'} width={'200px'}as={Button} rightIcon={<ArrowUpDownIcon />}>
     Сортировка
   </MenuButton>
   <MenuList>
-  <MenuGroup color={'black'} title='По ингридиентам'>
+  <MenuGroup color={'black'} fontSize={'30px'} title='По ингридиентам'>
   <MenuDivider />
 
     <MenuItem color={'black'} icon={<ArrowUpIcon/>} minH='40px' onClick={() => sortAscending()}>
@@ -174,7 +174,7 @@ export default function Forma({ user, cook, setCook }) {
     </MenuItem>
     </MenuGroup>
     <MenuDivider />
-  <MenuGroup color={'black'} title='По времени'>
+  <MenuGroup color={'black'} fontSize={'30px'} title='По времени'>
   <MenuDivider />
     <MenuItem color={'black'} icon={<ArrowUpIcon/>} minH='40px' onClick={() => sortAscendingTime()}>
       <Text color={'black'}>По возрастанию</Text>
@@ -189,7 +189,7 @@ export default function Forma({ user, cook, setCook }) {
         <Form  onSubmit={onSubmitHandler} className={styles.todoContainer}>
           <div className={styles.form}>
 
-          <Input
+          <Input fontSize={'30px'} height={'60px'} width={'350px'}
             backgroundColor={'white'}
             color={'black'}
             defaultValue={text?.title}
@@ -200,7 +200,7 @@ export default function Forma({ user, cook, setCook }) {
             name="title"
             />
           
-          <Button marginLeft={'10px'} type="submit" leftIcon={<SearchIcon />} colorScheme='teal' variant='solid'>
+          <Button marginLeft={'10px'} type="submit" fontSize={'30px'} height={'60px'} width={'150px'} leftIcon={<SearchIcon />} colorScheme='teal' variant='solid'>
             Поиск
           </Button>
             </div>
