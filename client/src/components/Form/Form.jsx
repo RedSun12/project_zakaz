@@ -186,7 +186,7 @@ export default function Forma({ user, cook, setCook }) {
   </MenuList>
 </Menu>
         {/* <Form></Form> */}
-        <Form  onSubmit={onSubmitHandlet} className={styles.todoContainer}>
+        <Form  onSubmit={onSubmitHandler} className={styles.todoContainer}>
           <div className={styles.form}>
 
           <Input
