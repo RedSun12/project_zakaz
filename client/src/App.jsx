@@ -9,6 +9,7 @@ import axiosInstance, { setAccessToken } from './axiosInstance';
 import Favorities from './components/Favorities/Favorities';
 import InfoCard from './components/InfoCard/InfoCard';
 import MorePage from './pages/MorePage/MorePage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 
 function App() {
   const [user, setUser] = useState();
@@ -56,6 +57,10 @@ function App() {
         {
           path: '/more/:idMeal',
           element: <MorePage user={user} cook={cook} setCook={setCook} />,
+        },
+        {
+          path: '/profile',
+          element: <ProfilePage user={user} cook={cook} setCook={setCook} />,
         },
       ],
     },

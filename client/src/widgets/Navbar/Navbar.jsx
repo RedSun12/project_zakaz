@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Avatar, Button, IconButton, Img, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react';
 import { HamburgerIcon, AddIcon, ExternalLinkIcon, RepeatIcon, EditIcon } from '@chakra-ui/icons'
 import axiosInstance, { setAccessToken } from '../../axiosInstance';
 import styles from './Navbar.module.css';
@@ -13,6 +13,9 @@ export default function Navbar({ user, setUser }) {
   }
   const clickFavorites = () => {
     navigate('/favorities')
+  }
+  const clickProfile = () => {
+    navigate('/profile')
   }
 
   const logoutHandler = async () => {
@@ -39,22 +42,19 @@ export default function Navbar({ user, setUser }) {
                   />
                   <MenuList padding={'0px'}>
                     {/* <MenuItem color={'black'} icon={<BiHomeSmile />} command='⌘T'> */}
-                    <Button width={'100%'} onClick={clickHome} color={'black'}>Главная</Button>
-                    <Button width={'100%'} onClick={clickFavorites} color={'black'}>Избранное</Button>
-                    {/* <Link to='/favorities'>Избранное</Link> */}
-                    {/* <Button color={'black'} to='/'>Главная</Button> */}
-                    {/* <Link color='black' to='/'>Главная</Link> */}
-                      {/* Главная
-                    </MenuItem> */}
+                    <Button fontSize={'25px'} width={'100%'} onClick={clickHome} color={'black'}>Главная</Button>
+                    <Button fontSize={'25px'} width={'100%'} onClick={clickFavorites} color={'black'}>Избранное</Button>
           </MenuList>
         </Menu>
-        <Avatar className={styles.ava} width={'60px'} height={'60px'} backgroundColor={'gray'} src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user.username}`} alt="avatar" />
-        <div className={styles.nickName}>{user.username}</div>
+        <div className={styles.nameAva}>
+          <Avatar onClick={clickProfile} className={styles.ava} width={'55px'} height={'60px'} backgroundColor={'gray'} src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${user.username}`} alt="avatar" />
+          <div onClick={clickProfile} className={styles.nickName}>{user.username}</div>
+        </div>
         </div>
       ) : (
                   <Menu>
                   <MenuButton
-                    marginLeft={'10px'}
+                    marginLeft={'20px'}
                     // padding={'0px'}
                     as={IconButton}
                     aria-label='Options'
@@ -63,18 +63,27 @@ export default function Navbar({ user, setUser }) {
                     backgroundColor={'white'}
                   />
                   <MenuList padding={'0px'}>
-                      <AuthForm width={'100%'} title='Войти' type='signin' setUser={setUser} />
-                      <AuthForm width={'100%'} title='Зарегистрироваться' type='signup' setUser={setUser} />
+                      <AuthForm fontSize={'25px'} width={'100%'} title='Войти' type='signin' setUser={setUser} />
+                      <AuthForm fontSize={'25px'} width={'100%'} title='Зарегистрироваться' type='signup' setUser={setUser} />
                   </MenuList>
                 </Menu>
       )}
+      <Text>
+        Ешьте вкусно, ешьте много
+      </Text>
       <div className={styles.right}>
         {user?.username ? (
           <>
-            <Button className={styles.exit} marginRight={'10px'} onClick={logoutHandler}>Выйти</Button>
+            <Button fontSize={'22px'} className={styles.exit} marginRight={'10px'} onClick={logoutHandler}>Выйти</Button>
           </>
         ) : (
-          <></>
+          <>
+          {/* <iframe src="../../../public/scovoroda.html">
+            <p> display</p>
+          </iframe> */}
+          <Img width={'60px'} src='../../../public/food.svg'/>
+            {/* <img src='../../../public'> */}
+          </>
         )}
       </div>
     </div>
